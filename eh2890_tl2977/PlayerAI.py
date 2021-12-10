@@ -43,6 +43,15 @@ class PlayerAI(BaseAI):
         You may adjust the input variables as you wish (though it is not necessary). Output has to be (x,y) coordinates.
         
         """
+        opp_pos = grid.find(3 - self.player_num)
+        neighbors = grid.get_neighbors(opp_pos, only_available = True)
+        if len(neighbors) <= 2:
+            print("WEAKNESS DETECTED")
+            print("NEIGHBORS:", neighbors)
+            for neigh in neighbors:
+                if opp_pos in grid.get_neighbors(neigh, only_available = True):
+                    print("NEIGH:", neigh)
+                    return neigh
         result, _ = self.max_move(grid, self.pos, 1, -math.inf, math.inf, True)
         return result
 
@@ -60,7 +69,7 @@ class PlayerAI(BaseAI):
         maxChild, maxUtility = None, -math.inf
         neighbors = grid.get_neighbors(pos, only_available = True)
         if len(neighbors) == 0:
-            return None, self.DEF(grid, self.player_num) # heuristic
+            return None, self.h(grid, self.player_num, off) # heuristic
         for child_pos in neighbors:
             child_grid = grid.clone()
             child_grid.move(child_pos, self.player_num)
@@ -103,11 +112,17 @@ class PlayerAI(BaseAI):
         You may adjust the input variables as you wish (though it is not necessary). Output has to be (x,y) coordinates.
         
         """
+        opp_pos = grid.find(3 - self.player_num)
+        neighbors = grid.get_neighbors(opp_pos, only_available = True)
+        if len(neighbors) == 1:
+            return neighbors[0]
         result, _ = self.max_trap(grid, grid.find(3 - self.player_num), 1, -math.inf, math.inf, True)
         return result
 
     def max_trap(self, grid, pos, i, a, b, off):
-        if i >= 3:
+        if self.paths2(grid, 3 - self.player_num) == 1:
+            return grid.get_neighbors(pos, only_available = True)[0]
+        if i >= 5:
             return None, self.h(grid, self.player_num, off)
             #return None, -self.HM(grid, 3 - self.player_num) # heuristic
         maxChild, maxUtility = None, -math.inf
@@ -141,6 +156,8 @@ class PlayerAI(BaseAI):
     def h(self, grid : Grid, player_num, off):
         player_moves = self.paths2(grid, self.player_num)
         opp_moves = -self.paths2(grid, 3 - self.player_num)
+        if opp_moves == 0:
+            return math.inf
         if off:
             return player_moves + 2 * opp_moves
         return 2 * player_moves + opp_moves
@@ -157,3 +174,6 @@ class PlayerAI(BaseAI):
             q = n[1]
             count += len({(a, b) for a in valid_range1(p) for b in valid_range1(q) if grid.map[(a, b)] == 0} - neighbors1_set)
         return count
+
+    def m_dist(self, p1, p2):
+        return abs(p1[0] - p2[0]) + abs(p1[1] - p2[1]) 
