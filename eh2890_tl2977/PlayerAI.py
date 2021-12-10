@@ -45,26 +45,24 @@ class PlayerAI(BaseAI):
         """
         opp_pos = grid.find(3 - self.player_num)
         neighbors = grid.get_neighbors(opp_pos, only_available = True)
-        if len(neighbors) <= 2:
-            print("WEAKNESS DETECTED")
+        if len(neighbors) == 1:
+            print("WEAKNESS DETECTED, case 1")
+            print("NEIGHBORS:", neighbors)
+            if opp_pos in grid.get_neighbors(neighbors[0], only_available = True):
+                return neighbors[0]
+        if len(neighbors) == 2:
+            print("WEAKNESS DETECTED, case 2")
             print("NEIGHBORS:", neighbors)
             for neigh in neighbors:
-                if opp_pos in grid.get_neighbors(neigh, only_available = True):
+                print("neighbors of", neigh, grid.get_neighbors(neigh, only_available = True))
+                if opp_pos in grid.get_neighbors(neigh, only_available = True) and opp_pos not in neighbors:
                     print("NEIGH:", neigh)
                     return neigh
         result, _ = self.max_move(grid, self.pos, 1, -math.inf, math.inf, True)
         return result
 
-    '''
-    def getAvailableMoves(self, grid, pos):
-        x,y = pos
-        valid_range = lambda t: range(max(t-1, 0), min(t+2, grid.dim))
-        return list({(a,b) for a in valid_range(x) for b in valid_range(y) if grid.map[(a, b)] == 0} - {(x,y)})
-    '''
-
     def max_move(self, grid, pos, i, a, b, off):
         if i >= 5:
-            #return None, self.DEF(grid, self.player_num) # heuristic
             return None, self.h(grid, self.player_num, off)
         maxChild, maxUtility = None, -math.inf
         neighbors = grid.get_neighbors(pos, only_available = True)
@@ -117,11 +115,12 @@ class PlayerAI(BaseAI):
         if len(neighbors) == 1:
             return neighbors[0]
         result, _ = self.max_trap(grid, grid.find(3 - self.player_num), 1, -math.inf, math.inf, True)
+        print("RESULT:", result)
         return result
 
     def max_trap(self, grid, pos, i, a, b, off):
         if self.paths2(grid, 3 - self.player_num) == 1:
-            return grid.get_neighbors(pos, only_available = True)[0]
+            return grid.get_neighbors(pos, only_available = True)[0], math.inf
         if i >= 5:
             return None, self.h(grid, self.player_num, off)
             #return None, -self.HM(grid, 3 - self.player_num) # heuristic
@@ -158,6 +157,8 @@ class PlayerAI(BaseAI):
         opp_moves = -self.paths2(grid, 3 - self.player_num)
         if opp_moves == 0:
             return math.inf
+        if player_moves == 1:
+            return -math.inf
         if off:
             return player_moves + 2 * opp_moves
         return 2 * player_moves + opp_moves
@@ -168,7 +169,7 @@ class PlayerAI(BaseAI):
         valid_range1 = lambda t: range(max(t-1, 0), min(t+2, grid.dim))
         neighbors1 = list({(a,b) for a in valid_range1(x) for b in valid_range1(y) if grid.map[(a, b)] == 0} - {(x,y)})
         neighbors1_set = set(neighbors1)
-        count += len(neighbors1_set)
+        count += 2 * len(neighbors1_set)
         for n in neighbors1:
             p = n[0]
             q = n[1]
