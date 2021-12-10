@@ -58,7 +58,7 @@ class PlayerAI(BaseAI):
                 if opp_pos in grid.get_neighbors(neigh, only_available = True) and opp_pos not in neighbors:
                     print("NEIGH:", neigh)
                     return neigh
-        result, _ = self.max_move(grid, self.pos, 1, -math.inf, math.inf, True)
+        result, _ = self.max_move(grid, self.pos, 1, -math.inf, math.inf, False)
         return result
 
     def max_move(self, grid, pos, i, a, b, off):
@@ -157,11 +157,11 @@ class PlayerAI(BaseAI):
         opp_moves = -self.paths2(grid, 3 - self.player_num)
         if opp_moves == 0:
             return math.inf
-        if player_moves == 1:
+        if grid.get_neighbors(grid.find(self.player_num), only_available = True) == 1:
             return -math.inf
         if off:
-            return player_moves + 2 * opp_moves
-        return 2 * player_moves + opp_moves
+            return player_moves + 3 * opp_moves
+        return 3 * player_moves + opp_moves
 
     def paths2(self, grid, player_num):
         count = 0
