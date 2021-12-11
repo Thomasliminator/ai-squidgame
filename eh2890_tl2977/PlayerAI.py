@@ -169,7 +169,7 @@ class PlayerAI(BaseAI):
         valid_range1 = lambda t: range(max(t-1, 0), min(t+2, grid.dim))
         neighbors1 = list({(a,b) for a in valid_range1(x) for b in valid_range1(y) if grid.map[(a, b)] == 0} - {(x,y)})
         neighbors1_set = set(neighbors1)
-        count += 2 * len(neighbors1_set)
+        count += 2.5 * len(neighbors1_set)
         for n in neighbors1:
             p = n[0]
             q = n[1]
