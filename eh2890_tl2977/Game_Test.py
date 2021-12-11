@@ -283,7 +283,6 @@ def main():
                 game = Game(playerAI = playerAI, computerAI = computerAI, N = 7, displayer=displayer)
                 result = game.play()
                 
-                result = 1
                 if result == 1:
                     results[keys[i]] += 1
                 elif result == 2:

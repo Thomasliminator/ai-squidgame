@@ -1,19 +1,19 @@
 ROUND 1 of TOURNAMENT
-The d210102 player won 1 times and the d26102 player won 0 times.
-The d2362 player won 1 times and the s2222 player won 0 times.
-The d2332 player won 1 times and the d2662 player won 0 times.
-The s2462 player won 1 times and the s2642 player won 0 times.
-The s2442 player won 1 times and the d2424 player won 0 times.
-The s2332 player won 1 times and the d2222 player won 0 times.
-The s2424 player won 1 times and the d2552 player won 0 times.
-The d25102 player won 1 times and the d2442 player won 0 times.
+The d2332 player won 10 times and the s2642 player won 0 times.
+The s2462 player won 10 times and the d2424 player won 0 times.
+The s2424 player won 10 times and the d2442 player won 0 times.
+The d210102 player won 10 times and the s2442 player won 0 times.
+The d26102 player won 10 times and the d2362 player won 0 times.
+The s2222 player won 10 times and the d2662 player won 0 times.
+The d25102 player won 10 times and the d2552 player won 0 times.
+The s2332 player won 10 times and the d2222 player won 0 times.
 ROUND 2 of TOURNAMENT
-The d210102 player won 1 times and the d2362 player won 0 times.
-The d2332 player won 1 times and the s2462 player won 0 times.
-The s2442 player won 1 times and the s2332 player won 0 times.
-The s2424 player won 1 times and the d25102 player won 0 times.
+The d2332 player won 10 times and the s2462 player won 0 times.
+The s2424 player won 10 times and the d210102 player won 0 times.
+The d26102 player won 10 times and the s2222 player won 0 times.
+The d25102 player won 10 times and the s2332 player won 0 times.
 ROUND 3 of TOURNAMENT
-The d210102 player won 1 times and the d2332 player won 0 times.
-The s2442 player won 1 times and the s2424 player won 0 times.
+The d2332 player won 10 times and the s2424 player won 0 times.
+The d26102 player won 10 times and the d25102 player won 0 times.
 ROUND 4 of TOURNAMENT
-The d210102 player won 1 times and the s2442 player won 0 times.
+The d2332 player won 10 times and the d26102 player won 0 times.
