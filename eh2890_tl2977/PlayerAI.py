@@ -46,17 +46,17 @@ class PlayerAI(BaseAI):
         opp_pos = grid.find(3 - self.player_num)
         neighbors = grid.get_neighbors(opp_pos, only_available = True)
         if len(neighbors) == 1:
-            print("WEAKNESS DETECTED, case 1")
-            print("NEIGHBORS:", neighbors)
+            #print("WEAKNESS DETECTED, case 1")
+            #print("NEIGHBORS:", neighbors)
             if opp_pos in grid.get_neighbors(neighbors[0], only_available = True):
                 return neighbors[0]
         if len(neighbors) == 2:
-            print("WEAKNESS DETECTED, case 2")
-            print("NEIGHBORS:", neighbors)
+            ##print("WEAKNESS DETECTED, case 2")
+            #print("NEIGHBORS:", neighbors)
             for neigh in neighbors:
-                print("neighbors of", neigh, grid.get_neighbors(neigh, only_available = True))
+                #print("neighbors of", neigh, grid.get_neighbors(neigh, only_available = True))
                 if opp_pos in grid.get_neighbors(neigh, only_available = True) and opp_pos not in neighbors:
-                    print("NEIGH:", neigh)
+                    #print("NEIGH:", neigh)
                     return neigh
         result, _ = self.max_move(grid, self.pos, 1, -math.inf, math.inf, False)
         return result
@@ -84,10 +84,12 @@ class PlayerAI(BaseAI):
         if i >= 5:
             return None, 1
         minChild, minUtility = None, math.inf
+        opp_pos = grid.find(3 - self.player_num)
         for child_pos in grid.getAvailableCells():
             child_grid = grid.clone()
             child_grid.trap(child_pos)
             _, utility = self.max_move(child_grid, pos, i + 1, a, b, off)
+            utility *= self.prob(opp_pos, child_pos)
             if utility < minUtility:
                 minChild, minUtility = child_pos, utility
             if minUtility <= a:
@@ -115,7 +117,7 @@ class PlayerAI(BaseAI):
         if len(neighbors) == 1:
             return neighbors[0]
         result, _ = self.max_trap(grid, grid.find(3 - self.player_num), 1, -math.inf, math.inf, True)
-        print("RESULT:", result)
+        #print("RESULT:", result)
         return result
 
     def max_trap(self, grid, pos, i, a, b, off):
@@ -123,12 +125,12 @@ class PlayerAI(BaseAI):
             return grid.get_neighbors(pos, only_available = True)[0], math.inf
         if i >= 5:
             return None, self.h(grid, self.player_num, off)
-            #return None, -self.HM(grid, 3 - self.player_num) # heuristic
         maxChild, maxUtility = None, -math.inf
         for child_pos in grid.getAvailableCells():
             child_grid = grid.clone()
             child_grid.trap(child_pos)
             _, utility = self.min_trap(child_grid, pos, i + 1, a, b, off)
+            utility *= self.prob(self.pos, child_pos)
             if utility > maxUtility:
                 maxChild, maxUtility = child_pos, utility
             if maxUtility >= b:
@@ -160,8 +162,8 @@ class PlayerAI(BaseAI):
         if grid.get_neighbors(grid.find(self.player_num), only_available = True) == 1:
             return -math.inf
         if off:
-            return player_moves + 3 * opp_moves
-        return 3 * player_moves + opp_moves
+            return player_moves + 1.5 * opp_moves
+        return 1.5 * player_moves + opp_moves
 
     def paths2(self, grid, player_num):
         count = 0
@@ -178,3 +180,6 @@ class PlayerAI(BaseAI):
 
     def m_dist(self, p1, p2):
         return abs(p1[0] - p2[0]) + abs(p1[1] - p2[1]) 
+    
+    def prob(self, pos, target):
+        return 1 - 0.05*(self.m_dist(pos, target) - 1)
