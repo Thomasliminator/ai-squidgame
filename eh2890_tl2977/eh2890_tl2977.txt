@@ -1,3 +1,9 @@
-Contribution:
+Team Name: "no idea"
 
-Equal contribution
+Members:
+- Eumin Hong (eh2890)
+- Thomas Lim (tl2977)
+
+Contribution:
+- eh2890: Equal contribution
+- tl2977: Equal contribution
